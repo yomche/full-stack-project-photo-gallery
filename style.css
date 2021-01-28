@@ -1,0 +1,93 @@
+body {
+  background-color: #262524;
+  margin: 0;
+  padding: 0;
+  background-image: url(images/black-grind.png);
+  background-repeat: repeat;
+}
+
+.main-content {
+  width: 1200px;
+  background-color: white;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.header {
+  width: 1200px;
+  height: 80px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__left-text-content {
+  list-style: none;
+  width: 200px;
+  padding-left: 15px;
+}
+
+.header__center-text-content {
+  list-style: none;
+  display: flex;
+  width: 150px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__right-text-content {
+  list-style: none;
+  display: flex;
+  width: 170px;
+  justify-content: space-between;
+  padding-right: 30px;
+  align-items: center;
+}
+
+.main {
+  height: 420px;
+  width: 1200px;
+  background-color: white;
+  display: flex;
+}
+
+.aside {
+  height: 530px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.aside__text {
+  transform: rotate(-90deg);
+}
+
+.photo-section__title {
+  width: 1142px;
+  background-color: white;
+  /* border: 1px solid black; */
+  text-align: center;
+}
+
+.photo-section__heading { 
+    font-size: 30px;
+}
+
+.photo-section__paragraph {
+    font-size: 20px;
+}
+
+.photo-section__list {
+  width: 1143px;
+  height: 400px;
+  background-color: white;
+  display: flex;
+}
+
+.photo-section__element {
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  border: 1px solid black;
+}
