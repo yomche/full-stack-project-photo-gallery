@@ -1,3 +1,7 @@
+*{
+  box-sizing: border-box;
+}
+
 body {
   background-color: #262524;
   margin: 0;
@@ -14,7 +18,7 @@ body {
 }
 
 .header {
-  /* width: 1200px; */
+  width: 1200px;
   height: 80px;
   background-color: white;
   display: flex;
@@ -47,7 +51,7 @@ body {
 
 .main {
   height: 420px;
-  /* width: 1200px; */
+  width: 1200px;
   background-color: white;
   display: flex;
 }
@@ -83,6 +87,7 @@ body {
   height: 400px;
   background-color: white;
   overflow: hidden;
+  display: flex;
 }
 
 .photo-section__element {
@@ -90,6 +95,5 @@ body {
   height: 400px;
   background-color: white;
   border: 1px solid gray;
-  font-size: 0;
-  display: inline-block;
+  flex-shrink: 0;
 }
