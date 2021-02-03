@@ -8,9 +8,12 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+    },
+      {
         test: /\.scss$/i,
         use: [
-          "style-loader",
           MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
@@ -40,6 +43,21 @@ module.exports = {
         options: {
           name: "[name].[ext]",
           outputPath: "images",
+        },
+      },
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+        options: {
+          attributes: {
+            list: [
+              {
+                tag: "img",
+                attribute: "src",
+                type: "src",
+              },
+            ],
+          },
         },
       },
     ],
