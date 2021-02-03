@@ -1,16 +1,26 @@
 $primary-color: #fff;
 $secondary-color: #262524;
-
 $primary-width: 1200px;
 
-*{
+@mixin flex-box-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-box-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+* {
   box-sizing: border-box;
 }
 
 body {
-  background-color:$secondary-color;
   margin: 0;
   padding: 0;
+  background-color: $secondary-color;
   background-image: url(images/black-grind.png);
   background-repeat: repeat;
 }
@@ -24,10 +34,18 @@ body {
 .header {
   width: $primary-width;
   height: 80px;
+  @include flex-box-center;
   background-color: $primary-color;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+}
+
+.left-text-content__new:hover,
+.center-text-content__selected:hover,
+.center-text-content__about:hover,
+.right-text-content__the-story:hover,
+.right-text-content__connect:hover,
+.aside__text:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .header__left-text-content {
@@ -38,34 +56,29 @@ body {
 
 .header__center-text-content {
   list-style: none;
-  display: flex;
   width: 150px;
-  justify-content: space-between;
-  align-items: center;
+  @include flex-box-center;
   column-gap: 9px;
 }
 
 .header__right-text-content {
   list-style: none;
-  display: flex;
-  justify-content: space-between;
   padding-right: 30px;
-  align-items: center;
+  @include flex-box-center;
   column-gap: 9px;
 }
 
 .main {
-  height: 530px;
   width: $primary-width;
-  background-color: $primary-color;
+  height: 530px;
   display: flex;
+  background-color: $primary-color;
 }
 
 .aside {
   height: 530px;
+  @include flex-box-center;
   background-color: $primary-color;
-  display: flex;
-  align-items: center;
 }
 
 .aside__text {
@@ -74,8 +87,8 @@ body {
 
 .photo-section__title {
   width: 1142px;
-  background-color: $primary-color;
   text-align: center;
+  background-color: $primary-color;
 }
 
 .photo-section__heading {
@@ -87,9 +100,12 @@ body {
   font-size: 20px;
 }
 
+.prev-arrow:hover, .next-arrow:hover {
+  transform: scale(1.2);
+}
+
 .photo-section__manipulation {
-  display: flex;
-  justify-content:flex-end;
+  @include flex-box-end;
   column-gap: 9px;
   padding-right: 20px;
   padding-bottom: 10px;
@@ -98,8 +114,8 @@ body {
 .photo-section__list {
   width: 1143px;
   height: 400px;
-  overflow: hidden;
   display: flex;
+  overflow: hidden;
 }
 
 .photo-section__element {
