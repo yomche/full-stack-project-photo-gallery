@@ -21,7 +21,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: $secondary-color;
-  background-image: url(images/black-grind.png);
+  background-image: url('images/black-grind.png');
   background-repeat: repeat;
 }
 
@@ -100,7 +100,8 @@ body {
   font-size: 20px;
 }
 
-.prev-arrow:hover, .next-arrow:hover {
+.prev-arrow:hover,
+.next-arrow:hover {
   transform: scale(1.2);
 }
 
@@ -116,7 +117,7 @@ body {
   overflow: hidden;
 }
 
-.photo-section__slider{ 
+.photo-section__slider {
   width: 2200px;
   display: flex;
   transition: transform 350ms;
