@@ -113,9 +113,13 @@ body {
 
 .photo-section__list {
   width: 1143px;
-  height: 400px;
-  display: flex;
   overflow: hidden;
+}
+
+.photo-section__slider{ 
+  width: 2200px;
+  display: flex;
+  transition: transform 350ms;
 }
 
 .photo-section__element {
