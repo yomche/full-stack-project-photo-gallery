@@ -1,27 +1,64 @@
 import './style.scss';
 import './index.html';
+import {
+  photoWidth,
+  numberOfSlidingPhoto,
+  numberOfVisiblePhotos,
+  slider,
+  leftArrow,
+  rightArrow,
+} from './constantValues';
+import { photoElements } from './photoElements';
 
-const slider = document.querySelector<HTMLElement>('.photo-section__slider');
-const leftArrow = document.querySelector<HTMLElement>('.prev-arrow');
-const rightArrow = document.querySelector<HTMLElement>('.next-arrow');
-const sliderElements = document.querySelectorAll<HTMLElement>('.photo-section__element');
+const imagesHandler = () => {
+  const fragment = document.createDocumentFragment();
 
-const photoWidth = 300;
-const numberOfSlidingPhoto = 1;
+  photoElements.forEach(function (photoItem) {
+    const image = document.createElement('img');
+    image.src = photoItem.photoSource;
+    image.alt = photoItem.alternativeName;
+    image.classList.add('photo-section__element');
+
+    fragment.appendChild(image);
+  });
+
+  slider.appendChild(fragment);
+};
+
+window.addEventListener('load', imagesHandler);
+
 let position = 0;
-const numberOfVisiblePhotos = 4;
+enum Direction {
+  Left,
+  Right,
+}
+
+const calculateNewPosition = (direction: Direction): number => {
+  switch (direction) {
+    case Direction.Left:
+      position += photoWidth * numberOfSlidingPhoto;
+      position = Math.min(position, 0);
+      break;
+    case Direction.Right:
+      position -= photoWidth * numberOfSlidingPhoto;
+      position = Math.max(position, -photoWidth * (photoElements.length - numberOfVisiblePhotos));
+      break;
+  }
+  return position;
+};
 
 const swipeToLeft = (): void => {
-  position += photoWidth * numberOfSlidingPhoto;
-  position = Math.min(position, 0);
-  slider.style.transform = 'translateX(' + position + 'px)';
+  slider.style.transform = 'translateX(' + calculateNewPosition(Direction.Left) + 'px)';
 };
 
 const swipeToRight = (): void => {
-  position -= photoWidth * numberOfSlidingPhoto;
-  position = Math.max(position, -photoWidth * (sliderElements.length - numberOfVisiblePhotos));
-  slider.style.transform = 'translateX(' + position + 'px)';
+  slider.style.transform = 'translateX(' + calculateNewPosition(Direction.Right) + 'px)';
 };
 
-leftArrow.addEventListener('click', swipeToLeft);
-rightArrow.addEventListener('click', swipeToRight);
+if (photoElements.length > 4) {
+  leftArrow.addEventListener('click', swipeToLeft);
+  rightArrow.addEventListener('click', swipeToRight);
+} else {
+  leftArrow.style.display = 'none';
+  rightArrow.style.display = 'none';
+}
