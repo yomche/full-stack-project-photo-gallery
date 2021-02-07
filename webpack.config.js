@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
@@ -75,6 +77,15 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
+  mode: 'development',
+  devServer: {
+      historyApiFallback: true,
+      contentBase: path.resolve(__dirname, 'dist'),
+      open: true,
+      compress: true,
+      hot: true,
+      port: 8080,
+  },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
@@ -84,5 +95,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'style.css',
     }),
+    new webpack.HotModuleReplacementPlugin(),
+    new CopyWebpackPlugin( {
+      patterns: [{from:'src/images',to:'images'} ]
+    } 
+  ), 
   ],
 };
