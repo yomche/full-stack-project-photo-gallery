@@ -3,9 +3,9 @@ $secondary-color: #262524;
 $primary-width: 1200px;
 
 @mixin flex-box-center {
+  align-items: center;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 @mixin flex-box-end {
@@ -18,24 +18,17 @@ $primary-width: 1200px;
 }
 
 body {
-  margin: 0;
-  padding: 0;
   background-color: $secondary-color;
   background-image: url('images/black-grind.png');
   background-repeat: repeat;
+  margin: 0;
+  padding: 0;
 }
 
 .main-content {
-  width: $primary-width;
   margin: auto;
   margin-top: 50px;
-}
-
-.header {
   width: $primary-width;
-  height: 80px;
-  @include flex-box-center;
-  background-color: $primary-color;
 }
 
 .left-text-content__new:hover,
@@ -48,83 +41,92 @@ body {
   text-decoration: underline;
 }
 
-.header__left-text-content {
-  list-style: none;
-  width: 200px;
-  padding-left: 15px;
-}
-
-.header__center-text-content {
-  list-style: none;
-  width: 150px;
+.header {
   @include flex-box-center;
-  column-gap: 9px;
-}
+  background-color: $primary-color;
+  height: 80px;
+  width: $primary-width;
 
-.header__right-text-content {
-  list-style: none;
-  padding-right: 30px;
-  @include flex-box-center;
-  column-gap: 9px;
+  &__left-text-content {
+    list-style: none;
+    padding-left: 15px;
+    width: 200px;
+  }
+
+  &__center-text-content {
+    @include flex-box-center;
+    column-gap: 9px;
+    list-style: none;
+    width: 150px;
+  }
+
+  &__right-text-content {
+    @include flex-box-center;
+    column-gap: 9px;
+    list-style: none;
+    padding-right: 30px;
+  }
 }
 
 .main {
-  width: $primary-width;
-  height: 530px;
-  display: flex;
   background-color: $primary-color;
+  display: flex;
+  height: 530px;
+  width: $primary-width;
 }
 
 .aside {
-  height: 530px;
   @include flex-box-center;
   background-color: $primary-color;
+  height: 530px;
+
+  &__text {
+    transform: rotate(-90deg);
+  }
 }
 
-.aside__text {
-  transform: rotate(-90deg);
-}
+.photo-section {
+  &__title {
+    background-color: $primary-color;
+    text-align: center;
+    width: 1142px;
+  }
 
-.photo-section__title {
-  width: 1142px;
-  text-align: center;
-  background-color: $primary-color;
-}
+  &__heading {
+    font-size: 30px;
+    margin: 25px;
+  }
 
-.photo-section__heading {
-  margin: 25px;
-  font-size: 30px;
-}
+  &__paragraph {
+    font-size: 20px;
+  }
 
-.photo-section__paragraph {
-  font-size: 20px;
+  &__manipulation {
+    @include flex-box-end;
+    column-gap: 9px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+  }
+
+  &__list {
+    overflow: hidden;
+    width: 1143px;
+  }
+
+  &__slider {
+    display: flex;
+    transition: transform 350ms;
+    width: 2200px;
+  }
+
+  &__element {
+    flex-shrink: 0;
+    height: 400px;
+    width: 300px;
+  }
 }
 
 .prev-arrow:hover,
 .next-arrow:hover {
   transform: scale(1.2);
-}
-
-.photo-section__manipulation {
-  @include flex-box-end;
-  column-gap: 9px;
-  padding-right: 20px;
-  padding-bottom: 10px;
-}
-
-.photo-section__list {
-  width: 1143px;
-  overflow: hidden;
-}
-
-.photo-section__slider {
-  width: 2200px;
-  display: flex;
-  transition: transform 350ms;
-}
-
-.photo-section__element {
-  width: 300px;
-  height: 400px;
-  flex-shrink: 0;
 }
