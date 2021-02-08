@@ -123,10 +123,23 @@ body {
     flex-shrink: 0;
     height: 400px;
     width: 300px;
+    transition: 350ms;
   }
 }
 
 .prev-arrow:hover,
 .next-arrow:hover {
   transform: scale(1.2);
+}
+
+.photo-element-center {
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  transform: scale(1.5);
+  transition: transform 350ms;
+}
+
+.hide-arrow {
+  display: none;
 }
