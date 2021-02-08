@@ -1,14 +1,11 @@
 import './style.scss';
 import './index.html';
-import {
-  photoWidth,
-  numberOfSlidingPhoto,
-  numberOfVisiblePhotos,
-  slider,
-  leftArrow,
-  rightArrow,
-} from './constantValues';
+import { photoWidth, numberOfSlidingPhoto, numberOfVisiblePhotos } from './constants';
 import { photoElements } from './photoElements';
+
+const slider = document.querySelector<HTMLElement>('.photo-section__slider');
+const leftArrow = document.querySelector<HTMLElement>('.prev-arrow');
+const rightArrow = document.querySelector<HTMLElement>('.next-arrow');
 
 const imagesHandler = () => {
   const fragment = document.createDocumentFragment();
@@ -23,6 +20,24 @@ const imagesHandler = () => {
   });
 
   slider.appendChild(fragment);
+
+  const elements = document.querySelectorAll('.photo-section__element');
+  elements.forEach(function (item) {
+    item.addEventListener('click', function () {
+      item.classList.toggle('photo-element-center');
+    });
+  });
+
+  const closeDropdownHandler = (event: Event) => {
+    const target = <HTMLInputElement>event.target;
+    elements.forEach(function (item) {
+      if (target !== item) {
+        item.classList.remove('photo-element-center');
+      }
+    });
+  };
+
+  document.addEventListener('click', closeDropdownHandler);
 };
 
 window.addEventListener('load', imagesHandler);
@@ -55,10 +70,10 @@ const swipeToRight = (): void => {
   slider.style.transform = 'translateX(' + calculateNewPosition(Direction.Right) + 'px)';
 };
 
-if (photoElements.length > 4) {
+if (photoElements.length > numberOfVisiblePhotos) {
   leftArrow.addEventListener('click', swipeToLeft);
   rightArrow.addEventListener('click', swipeToRight);
 } else {
-  leftArrow.style.display = 'none';
-  rightArrow.style.display = 'none';
+  leftArrow.classList.add('hide-arrow');
+  rightArrow.classList.add('hide-arrow');
 }
