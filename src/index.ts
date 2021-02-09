@@ -6,6 +6,7 @@ import { photoElements } from './photoElements';
 const slider = document.querySelector<HTMLElement>('.photo-section__slider');
 const leftArrow = document.querySelector<HTMLElement>('.prev-arrow');
 const rightArrow = document.querySelector<HTMLElement>('.next-arrow');
+const photoList = document.querySelector<HTMLElement>('.photo-section__list');
 
 const imagesHandler = () => {
   const fragment = document.createDocumentFragment();
@@ -21,20 +22,32 @@ const imagesHandler = () => {
 
   slider.appendChild(fragment);
 
-  const elements = document.querySelectorAll('.photo-section__element');
+  const elements = document.querySelectorAll<HTMLElement>('.photo-section__element');
   elements.forEach(function (item) {
-    item.addEventListener('click', function () {
-      item.classList.toggle('photo-element-center');
-    });
+
+    const openImageHandler = (event: Event) => {
+      const target = event.target;
+      if (target == item ) {
+        const copyImageSrc: string= item.getAttribute('src');
+        const biggerImage = document.createElement('img');
+        biggerImage.src = copyImageSrc;
+        biggerImage.classList.add('photo-element-center');
+        biggerImage.setAttribute('id', 'center-image');
+        photoList.appendChild(biggerImage);
+      }
+    };
+
+    item.addEventListener('click', openImageHandler);
   });
 
-  const closeDropdownHandler = (event: Event) => {
-    const target = <HTMLInputElement>event.target;
-    elements.forEach(function (item) {
-      if (target !== item) {
-        item.classList.remove('photo-element-center');
-      }
-    });
+  let isOpen = false;
+
+  const closeDropdownHandler = () => {
+    const biggerImage = document.getElementById('center-image');
+    if (isOpen) {
+    biggerImage.parentNode.removeChild(biggerImage);
+    }
+    isOpen = !isOpen;
   };
 
   document.addEventListener('click', closeDropdownHandler);
