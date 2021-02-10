@@ -109,6 +109,7 @@ body {
   }
 
   &__list {
+    background-color: #000;
     overflow: hidden;
     width: 1143px;
   }
@@ -116,32 +117,63 @@ body {
   &__slider {
     display: flex;
     transition: transform 350ms;
-    width: 2200px;
+    width: 9999px;
+  }
+
+  &__element:hover {
+    cursor: pointer;
+    opacity: 0.7;
   }
 
   &__element {
     flex-shrink: 0;
     height: 400px;
-    width: 300px;
-    transition: 350ms;
+    opacity: 1;
+    transition: opacity 200ms ease;
+    width: 300px; 
   }
 }
 
 .prev-arrow:hover,
 .next-arrow:hover {
-  transform: scale(1.2);
+  cursor: pointer;
+  transform: scale(1.4);
 }
 
 .photo-element-center {
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
+  animation: image-appearance 240ms ease;
   bottom: 0;
+  box-shadow: 0 0 10px #000;
+  height: 600px;
   left: 0;
-  transform: scale(1.5);
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 450px;
 }
 
+@keyframes image-appearance {
+  0% {
+    opacity: 0;
+  }
+
+  25%{
+    opacity: .25;
+  }
+
+  50% {
+    opacity: .5;
+  }
+
+  75% {
+    opacity: .75;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
 
 .hide-arrow {
   visibility: hidden;
