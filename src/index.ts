@@ -46,21 +46,23 @@ const imagesHandler = (photos: Record<string, string>[]) => {
 
   slider.appendChild(fragment);
 
+  const openImageHandler = (item: HTMLElement, event: Event) => {
+    const target = event.target;
+    if (target === item) {
+      const copyImageSrc: string = item.getAttribute('src');
+      const biggerImage = document.createElement('img');
+      biggerImage.src = copyImageSrc;
+      biggerImage.classList.add('photo-element-center');
+      biggerImage.setAttribute('id', 'center-image');
+      photoList.appendChild(biggerImage);
+    }
+  };
+
   const elements = document.querySelectorAll<HTMLElement>('.photo-section__element');
   elements.forEach(function (item) {
-    const openImageHandler = (event: Event) => {
-      const target = event.target;
-      if (target === item) {
-        const copyImageSrc: string = item.getAttribute('src');
-        const biggerImage = document.createElement('img');
-        biggerImage.src = copyImageSrc;
-        biggerImage.classList.add('photo-element-center');
-        biggerImage.setAttribute('id', 'center-image');
-        photoList.appendChild(biggerImage);
-      }
-    };
-
-    item.addEventListener('click', openImageHandler);
+    item.addEventListener('click', (event) => {
+      openImageHandler(item, event);
+    });
   });
 
   const closeBiggerImageHandler = () => {
