@@ -7,15 +7,27 @@ const leftArrow = document.querySelector<HTMLElement>('.prev-arrow');
 const rightArrow = document.querySelector<HTMLElement>('.next-arrow');
 const photoList = document.querySelector<HTMLElement>('.photo-section__list');
 
-const headerSection = document.querySelector<HTMLElement>('.header');
-const asideSection = document.querySelector<HTMLElement>('.aside');
-const photoSection = document.querySelector<HTMLElement>('.photo-section');
+let amountOfPhotos = 0;
+let isOpen = false;
+let position = 0;
+enum Direction {
+  Left,
+  Right,
+}
 
 const getPhotos = async (url: string) => {
   try {
     const response = await fetch(url);
     const photos = await response.json();
+    amountOfPhotos = photos.length;
     imagesHandler(photos);
+    if (amountOfPhotos > numberOfVisiblePhotos) {
+      leftArrow.addEventListener('click', swipeToLeft);
+      rightArrow.addEventListener('click', swipeToRight);
+    } else {
+      leftArrow.classList.add('hide-arrow');
+      rightArrow.classList.add('hide-arrow');
+    }
   } catch (error) {
     return error;
   }
@@ -25,7 +37,6 @@ getPhotos('https://picsum.photos/v2/list');
 
 const imagesHandler = (photos: Record<string, string>[]) => {
   const fragment = document.createDocumentFragment();
-
   photos.forEach(function (photoItem) {
     const image = document.createElement('img');
     image.src = photoItem.download_url;
@@ -52,28 +63,16 @@ const imagesHandler = (photos: Record<string, string>[]) => {
     item.addEventListener('click', openImageHandler);
   });
 
-  const closeBiggerImageHandler = (event: Event) => {
-    const target = event.target;
+  const closeBiggerImageHandler = () => {
     const biggerImage = document.getElementById('center-image');
-    if (
-      target === document.documentElement ||
-      target === document.body ||
-      target === headerSection ||
-      target === asideSection ||
-      target === photoSection
-    ) {
+    if (isOpen === true) {
       biggerImage.parentNode.removeChild(biggerImage);
     }
+    isOpen = !isOpen;
   };
 
   document.addEventListener('click', closeBiggerImageHandler);
 };
-
-let position = 0;
-enum Direction {
-  Left,
-  Right,
-}
 
 const calculateNewPosition = (direction: Direction): number => {
   switch (direction) {
@@ -83,9 +82,7 @@ const calculateNewPosition = (direction: Direction): number => {
       break;
     case Direction.Right:
       position -= photoWidth * numberOfSlidingPhoto;
-
-      // NEED TO FIX (CONST 30 - amount of photos from picsum)
-      position = Math.max(position, -photoWidth * (30 - numberOfVisiblePhotos));
+      position = Math.max(position, -photoWidth * (amountOfPhotos - numberOfVisiblePhotos));
       break;
   }
   return position;
@@ -98,12 +95,3 @@ const swipeToLeft = (): void => {
 const swipeToRight = (): void => {
   slider.style.transform = 'translateX(' + calculateNewPosition(Direction.Right) + 'px)';
 };
-
-// NEED TO FIX (CONST 30 - amount of photos from picsum)
-if (30 > numberOfVisiblePhotos) {
-  leftArrow.addEventListener('click', swipeToLeft);
-  rightArrow.addEventListener('click', swipeToRight);
-} else {
-  leftArrow.classList.add('hide-arrow');
-  rightArrow.classList.add('hide-arrow');
-}
