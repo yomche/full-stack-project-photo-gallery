@@ -1,22 +1,35 @@
 import './style.scss';
 import './index.html';
 import { photoWidth, numberOfSlidingPhoto, numberOfVisiblePhotos } from './constants';
-import { photoElements } from './photoElements';
 
 const slider = document.querySelector<HTMLElement>('.photo-section__slider');
 const leftArrow = document.querySelector<HTMLElement>('.prev-arrow');
 const rightArrow = document.querySelector<HTMLElement>('.next-arrow');
 const photoList = document.querySelector<HTMLElement>('.photo-section__list');
 
-const imagesHandler = () => {
+const headerSection = document.querySelector<HTMLElement>('.header');
+const asideSection = document.querySelector<HTMLElement>('.aside');
+const photoSection = document.querySelector<HTMLElement>('.photo-section');
+
+const getPhotos = async (url: string) => {
+  try {
+    const response = await fetch(url);
+    const photos = await response.json();
+    imagesHandler(photos);
+  } catch (error) {
+    return error;
+  }
+};
+
+getPhotos('https://picsum.photos/v2/list');
+
+const imagesHandler = (photos: Record<string, string>[]) => {
   const fragment = document.createDocumentFragment();
 
-  photoElements.forEach(function (photoItem) {
+  photos.forEach(function (photoItem) {
     const image = document.createElement('img');
-    image.src = photoItem.photoSource;
-    image.alt = photoItem.alternativeName;
+    image.src = photoItem.download_url;
     image.classList.add('photo-section__element');
-
     fragment.appendChild(image);
   });
 
@@ -24,11 +37,10 @@ const imagesHandler = () => {
 
   const elements = document.querySelectorAll<HTMLElement>('.photo-section__element');
   elements.forEach(function (item) {
-
     const openImageHandler = (event: Event) => {
       const target = event.target;
-      if (target == item ) {
-        const copyImageSrc: string= item.getAttribute('src');
+      if (target === item) {
+        const copyImageSrc: string = item.getAttribute('src');
         const biggerImage = document.createElement('img');
         biggerImage.src = copyImageSrc;
         biggerImage.classList.add('photo-element-center');
@@ -40,20 +52,22 @@ const imagesHandler = () => {
     item.addEventListener('click', openImageHandler);
   });
 
-  let isOpen = false;
-
-  const closeDropdownHandler = () => {
+  const closeBiggerImageHandler = (event: Event) => {
+    const target = event.target;
     const biggerImage = document.getElementById('center-image');
-    if (isOpen) {
-    biggerImage.parentNode.removeChild(biggerImage);
+    if (
+      target === document.documentElement ||
+      target === document.body ||
+      target === headerSection ||
+      target === asideSection ||
+      target === photoSection
+    ) {
+      biggerImage.parentNode.removeChild(biggerImage);
     }
-    isOpen = !isOpen;
   };
 
-  document.addEventListener('click', closeDropdownHandler);
+  document.addEventListener('click', closeBiggerImageHandler);
 };
-
-window.addEventListener('load', imagesHandler);
 
 let position = 0;
 enum Direction {
@@ -69,7 +83,9 @@ const calculateNewPosition = (direction: Direction): number => {
       break;
     case Direction.Right:
       position -= photoWidth * numberOfSlidingPhoto;
-      position = Math.max(position, -photoWidth * (photoElements.length - numberOfVisiblePhotos));
+
+      // NEED TO FIX (CONST 30 - amount of photos from picsum)
+      position = Math.max(position, -photoWidth * (30 - numberOfVisiblePhotos));
       break;
   }
   return position;
@@ -83,7 +99,8 @@ const swipeToRight = (): void => {
   slider.style.transform = 'translateX(' + calculateNewPosition(Direction.Right) + 'px)';
 };
 
-if (photoElements.length > numberOfVisiblePhotos) {
+// NEED TO FIX (CONST 30 - amount of photos from picsum)
+if (30 > numberOfVisiblePhotos) {
   leftArrow.addEventListener('click', swipeToLeft);
   rightArrow.addEventListener('click', swipeToRight);
 } else {
