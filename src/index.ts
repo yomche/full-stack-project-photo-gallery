@@ -35,6 +35,51 @@ const getPhotos = async (url: string) => {
 
 getPhotos('https://picsum.photos/v2/list');
 
+const imagesHandler = (photos: Record<string, string>[]) => {
+  createPhotos(photos);
+
+  localStorageHandler(photos);
+
+  photoManipulationsHandler();
+};
+
+const createPhotos = (photos: Record<string, string>[]) => {
+  const fragment = document.createDocumentFragment();
+  photos.forEach(function (photoItem) {
+    const image = document.createElement('img');
+    image.src = photoItem.download_url;
+    image.classList.add('photo-section__element');
+    fragment.appendChild(image);
+  });
+
+  slider.appendChild(fragment);
+};
+
+const localStorageHandler = (photos: Record<string, string>[]) => {
+  const isOpenLocalStorage = localStorage.getItem('isOpen');
+
+  if (isOpenLocalStorage === 'true') {
+    const biggerImage = document.createElement('img');
+    biggerImage.src = photos[0].download_url;
+    biggerImage.classList.add('photo-element-center');
+    biggerImage.setAttribute('id', 'center-image');
+    photoList.appendChild(biggerImage);
+  }
+};
+
+const photoManipulationsHandler = () => {
+  document.querySelectorAll<HTMLElement>('.photo-section__element').forEach(function (item) {
+    item.addEventListener('click', openImageCurry(item));
+  });
+  document.addEventListener('click', closeBiggerImageHandler);
+};
+
+const openImageCurry = (item: HTMLElement) => {
+  return (event: Event) => {
+    return openImageHandler(item, event);
+  };
+};
+
 const openImageHandler = (item: HTMLElement, event: Event) => {
   const target = event.target;
   if (target === item) {
@@ -55,39 +100,4 @@ const closeBiggerImageHandler = () => {
     localStorage.setItem('isOpen', 'false');
   }
   isOpen = !isOpen;
-};
-
-const localStorageHandler = (photos: Record<string, string>[]) => {
-  const isOpenLocalStorage = localStorage.getItem('isOpen');
-
-  if (isOpenLocalStorage === 'true') {
-    const biggerImage = document.createElement('img');
-    biggerImage.src = photos[0].download_url;
-    biggerImage.classList.add('photo-element-center');
-    biggerImage.setAttribute('id', 'center-image');
-    photoList.appendChild(biggerImage);
-  }
-};
-
-const imagesHandler = (photos: Record<string, string>[]) => {
-  const fragment = document.createDocumentFragment();
-  photos.forEach(function (photoItem) {
-    const image = document.createElement('img');
-    image.src = photoItem.download_url;
-    image.classList.add('photo-section__element');
-    fragment.appendChild(image);
-  });
-
-  slider.appendChild(fragment);
-
-  localStorageHandler(photos);
-
-  const elements = document.querySelectorAll<HTMLElement>('.photo-section__element');
-  elements.forEach(function (item) {
-    item.addEventListener('click', (event) => {
-      openImageHandler(item, event);
-    });
-  });
-
-  document.addEventListener('click', closeBiggerImageHandler);
 };

@@ -1,12 +1,21 @@
 import { photoWidth, numberOfSlidingPhoto, numberOfVisiblePhotos } from './constants';
 
 const slider = document.querySelector<HTMLElement>('.photo-section__slider');
-
 let position = 0;
 enum Direction {
   Left,
   Right,
 }
+
+export const swipeToLeft = (amountOfPhotos: number): void => {
+  slider.style.transform =
+    'translateX(' + calculateNewPosition(Direction.Left, amountOfPhotos) + 'px)';
+};
+
+export const swipeToRight = (amountOfPhotos: number): void => {
+  slider.style.transform =
+    'translateX(' + calculateNewPosition(Direction.Right, amountOfPhotos) + 'px)';
+};
 
 const calculateNewPosition = (direction: Direction, amountOfPhotos: number): number => {
   switch (direction) {
@@ -20,14 +29,4 @@ const calculateNewPosition = (direction: Direction, amountOfPhotos: number): num
       break;
   }
   return position;
-};
-
-export const swipeToLeft = (amountOfPhotos: number): void => {
-  slider.style.transform =
-    'translateX(' + calculateNewPosition(Direction.Left, amountOfPhotos) + 'px)';
-};
-
-export const swipeToRight = (amountOfPhotos: number): void => {
-  slider.style.transform =
-    'translateX(' + calculateNewPosition(Direction.Right, amountOfPhotos) + 'px)';
 };
