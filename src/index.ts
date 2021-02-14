@@ -46,6 +46,16 @@ const imagesHandler = (photos: Record<string, string>[]) => {
 
   slider.appendChild(fragment);
 
+  const isOpenLocalStorage = localStorage.getItem('isOpen');
+
+  if (isOpenLocalStorage === 'true') {
+    const biggerImage = document.createElement('img');
+    biggerImage.src = photos[0].download_url;
+    biggerImage.classList.add('photo-element-center');
+    biggerImage.setAttribute('id', 'center-image');
+    photoList.appendChild(biggerImage);
+  }
+
   const openImageHandler = (item: HTMLElement, event: Event) => {
     const target = event.target;
     if (target === item) {
@@ -55,6 +65,7 @@ const imagesHandler = (photos: Record<string, string>[]) => {
       biggerImage.classList.add('photo-element-center');
       biggerImage.setAttribute('id', 'center-image');
       photoList.appendChild(biggerImage);
+      localStorage.setItem('isOpen', 'true');
     }
   };
 
@@ -69,6 +80,7 @@ const imagesHandler = (photos: Record<string, string>[]) => {
     const biggerImage = document.getElementById('center-image');
     if (isOpen === true) {
       biggerImage.parentNode.removeChild(biggerImage);
+      localStorage.setItem('isOpen', 'false');
     }
     isOpen = !isOpen;
   };
