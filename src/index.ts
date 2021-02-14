@@ -38,7 +38,7 @@ getPhotos('https://picsum.photos/v2/list');
 const imagesHandler = (photos: Record<string, string>[]) => {
   createPhotos(photos);
 
-  localStorageHandler(photos);
+  localStorageHandler();
 
   photoManipulationsHandler();
 };
@@ -55,12 +55,12 @@ const createPhotos = (photos: Record<string, string>[]) => {
   slider.appendChild(fragment);
 };
 
-const localStorageHandler = (photos: Record<string, string>[]) => {
+const localStorageHandler = () => {
   const isOpenLocalStorage = localStorage.getItem('isOpen');
 
   if (isOpenLocalStorage === 'true') {
     const biggerImage = document.createElement('img');
-    biggerImage.src = photos[0].download_url;
+    biggerImage.src = localStorage.getItem('src');
     biggerImage.classList.add('photo-element-center');
     biggerImage.setAttribute('id', 'center-image');
     photoList.appendChild(biggerImage);
@@ -83,13 +83,13 @@ const openImageCurry = (item: HTMLElement) => {
 const openImageHandler = (item: HTMLElement, event: Event) => {
   const target = event.target;
   if (target === item) {
-    const copyImageSrc: string = item.getAttribute('src');
     const biggerImage = document.createElement('img');
-    biggerImage.src = copyImageSrc;
+    biggerImage.src = item.getAttribute('src');
     biggerImage.classList.add('photo-element-center');
     biggerImage.setAttribute('id', 'center-image');
     photoList.appendChild(biggerImage);
     localStorage.setItem('isOpen', 'true');
+    localStorage.setItem('src', biggerImage.src);
   }
 };
 
