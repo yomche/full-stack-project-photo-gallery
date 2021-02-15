@@ -18,12 +18,8 @@ const getPhotos = async (url: string) => {
     amountOfPhotos = photos.length;
     imagesHandler(photos);
     if (amountOfPhotos > numberOfVisiblePhotos) {
-      leftArrow.addEventListener('click', () => {
-        swipeToLeft(amountOfPhotos);
-      });
-      rightArrow.addEventListener('click', () => {
-        swipeToRight(amountOfPhotos);
-      });
+      leftArrow.addEventListener('click', leftArrowManipulation(amountOfPhotos));
+      rightArrow.addEventListener('click', rightArrowManipulation(amountOfPhotos));
     } else {
       leftArrow.classList.add('hide-arrow');
       rightArrow.classList.add('hide-arrow');
@@ -59,35 +55,32 @@ const localStorageHandler = () => {
   const isOpenLocalStorage = localStorage.getItem('isOpen');
 
   if (isOpenLocalStorage === 'true') {
-    const biggerImage = document.createElement('img');
-    biggerImage.src = localStorage.getItem('src');
-    biggerImage.classList.add('photo-element-center');
-    biggerImage.setAttribute('id', 'center-image');
-    photoList.appendChild(biggerImage);
+    createBiggerImageInMarkup(localStorage.getItem('src'));
   }
+};
+
+const createBiggerImageInMarkup = (source: string) => {
+  const biggerImage = document.createElement('img');
+  biggerImage.src = source;
+  biggerImage.classList.add('photo-element-center');
+  biggerImage.setAttribute('id', 'center-image');
+  photoList.appendChild(biggerImage);
+  return biggerImage;
 };
 
 const photoManipulationsHandler = () => {
   document.querySelectorAll<HTMLElement>('.photo-section__element').forEach(function (item) {
-    item.addEventListener('click', openImageCurry(item));
+    item.addEventListener('click', openImage(item));
   });
   document.addEventListener('click', closeBiggerImageHandler);
 };
 
-const openImageCurry = (item: HTMLElement) => {
-  return (event: Event) => {
-    return openImageHandler(item, event);
-  };
-};
+const openImage = (item: HTMLElement) => (event: Event) => openImageHandler(item, event);
 
 const openImageHandler = (item: HTMLElement, event: Event) => {
   const target = event.target;
   if (target === item) {
-    const biggerImage = document.createElement('img');
-    biggerImage.src = item.getAttribute('src');
-    biggerImage.classList.add('photo-element-center');
-    biggerImage.setAttribute('id', 'center-image');
-    photoList.appendChild(biggerImage);
+    const biggerImage = createBiggerImageInMarkup(item.getAttribute('src'));
     localStorage.setItem('isOpen', 'true');
     localStorage.setItem('src', biggerImage.src);
   }
@@ -101,3 +94,7 @@ const closeBiggerImageHandler = () => {
   }
   isOpen = !isOpen;
 };
+
+const leftArrowManipulation = (amountOfPhotos:number) => () => swipeToLeft(amountOfPhotos);
+
+const rightArrowManipulation = (amountOfPhotos:number) => () => swipeToRight(amountOfPhotos);
