@@ -1,7 +1,6 @@
 import './style.scss';
 import './index.html';
-import { swipeToLeft, swipeToRight } from './photoPosition';
-import { numberOfVisiblePhotos } from './constants';
+import { photoWidth, numberOfSlidingPhoto, numberOfVisiblePhotos } from './constants';
 
 const slider = document.querySelector<HTMLElement>('.photo-section__slider');
 const leftArrow = document.querySelector<HTMLElement>('.prev-arrow');
@@ -9,7 +8,9 @@ const rightArrow = document.querySelector<HTMLElement>('.next-arrow');
 const photoList = document.querySelector<HTMLElement>('.photo-section__list');
 
 let amountOfPhotos = 0;
-let isOpen = false;
+
+const isOpenData = localStorage.getItem('isOpen');
+let isOpen = isOpenData ?? 'false';
 
 const getPhotos = async (url: string) => {
   try {
@@ -29,7 +30,7 @@ const getPhotos = async (url: string) => {
   }
 };
 
-getPhotos('https://picsum.photos/v2/list');
+getPhotos('https://my-json-server.typicode.com/yomche/photo-gallery-api/photos');
 
 const imagesHandler = (photos: Record<string, string>[]) => {
   createPhotos(photos);
@@ -52,9 +53,10 @@ const createPhotos = (photos: Record<string, string>[]) => {
 };
 
 const localStorageHandler = () => {
-  const isOpenLocalStorage = localStorage.getItem('isOpen');
+  const position = parseInt(localStorage.getItem('position'));
+  slider.style.transform = 'translateX(' + position + 'px)';
 
-  if (isOpenLocalStorage === 'true') {
+  if (isOpenData === 'true') {
     createBiggerImageInMarkup(localStorage.getItem('src'));
   }
 };
@@ -72,29 +74,76 @@ const photoManipulationsHandler = () => {
   document.querySelectorAll<HTMLElement>('.photo-section__element').forEach(function (item) {
     item.addEventListener('click', openImage(item));
   });
-  document.addEventListener('click', closeBiggerImageHandler);
+  document.addEventListener('click', closeBiggerImageHandler, { capture: true });
 };
 
 const openImage = (item: HTMLElement) => (event: Event) => openImageHandler(item, event);
+
+enum Condition {
+  Open,
+  Close,
+}
+
+const isOpenChecker = (condition: Condition) => {
+  if (condition === Condition.Open) {
+    localStorage.setItem('isOpen', 'true');
+    isOpen = 'true';
+  } else if (condition === Condition.Close) {
+    localStorage.setItem('isOpen', 'false');
+    isOpen = 'false';
+  }
+};
 
 const openImageHandler = (item: HTMLElement, event: Event) => {
   const target = event.target;
   if (target === item) {
     const biggerImage = createBiggerImageInMarkup(item.getAttribute('src'));
-    localStorage.setItem('isOpen', 'true');
     localStorage.setItem('src', biggerImage.src);
+    isOpenChecker(Condition.Open);
   }
 };
 
 const closeBiggerImageHandler = () => {
   const biggerImage = document.getElementById('center-image');
-  if (isOpen === true) {
+  if (isOpen === 'true') {
     biggerImage.parentNode.removeChild(biggerImage);
-    localStorage.setItem('isOpen', 'false');
+    isOpenChecker(Condition.Close);
   }
-  isOpen = !isOpen;
 };
 
-const leftArrowManipulation = (amountOfPhotos:number) => () => swipeToLeft(amountOfPhotos);
+const leftArrowManipulation = (amountOfPhotos: number) => () => swipeToLeft(amountOfPhotos);
 
-const rightArrowManipulation = (amountOfPhotos:number) => () => swipeToRight(amountOfPhotos);
+const rightArrowManipulation = (amountOfPhotos: number) => () => swipeToRight(amountOfPhotos);
+
+let position = parseInt(localStorage.getItem('position'));
+
+enum Direction {
+  Left,
+  Right,
+}
+
+const swipeToLeft = (amountOfPhotos: number): void => {
+  slider.style.transform =
+    'translateX(' + calculateNewPosition(Direction.Left, amountOfPhotos) + 'px)';
+};
+
+const swipeToRight = (amountOfPhotos: number): void => {
+  slider.style.transform =
+    'translateX(' + calculateNewPosition(Direction.Right, amountOfPhotos) + 'px)';
+};
+
+const calculateNewPosition = (direction: Direction, amountOfPhotos: number): number => {
+  switch (direction) {
+    case Direction.Left:
+      position += photoWidth * numberOfSlidingPhoto;
+      position = Math.min(position, 0);
+      localStorage.setItem('position', position.toString());
+      break;
+    case Direction.Right:
+      position -= photoWidth * numberOfSlidingPhoto;
+      position = Math.max(position, -photoWidth * (amountOfPhotos - numberOfVisiblePhotos));
+      localStorage.setItem('position', position.toString());
+      break;
+  }
+  return position;
+};
