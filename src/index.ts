@@ -30,7 +30,7 @@ const getPhotos = async (url: string) => {
   }
 };
 
-getPhotos('https://my-json-server.typicode.com/yomche/photo-gallery-api/photos');
+getPhotos('https://my-json-server.typicode.com/yomche/photo-gallery-rest-api/photos');
 
 const imagesHandler = (photos: Record<string, string>[]) => {
   createPhotos(photos);
