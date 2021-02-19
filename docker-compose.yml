@@ -1,0 +1,10 @@
+version: '3.1'
+
+services:
+  web:
+    image: yomche/test
+    ports:
+      - "8080:8080"
+    volumes:
+      - ".:/app"
+    working_dir: /app
