@@ -1,10 +1,13 @@
-version: '3.1'
-
+version: "3.9"
 services:
-  web:
-    image: yomche/test
+  frontend:
+    image: yomche/photo-gallery-task
     ports:
       - "8080:8080"
     volumes:
       - ".:/app"
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
     working_dir: /app
+    command: sh -c "npm run dev-server --host 0.0.0.0"
