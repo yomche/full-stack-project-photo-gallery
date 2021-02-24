@@ -1,13 +1,11 @@
 version: "3.9"
 services:
-  frontend:
-    image: yomche/photo-gallery-task
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
-    volumes:
-      - ".:/app"
+      - "8081:8081"
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       HOST: 0.0.0.0
-    working_dir: /app
-    command: sh -c "npm run dev-server --host 0.0.0.0"
