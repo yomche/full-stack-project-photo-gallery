@@ -1,10 +1,10 @@
 import { photoWidth, numberOfSlidingPhoto, numberOfVisiblePhotos, Direction, Condition } from './constants';
 
-const photoList = document.querySelector<HTMLElement>('.photo-section__list');
 const slider = document.querySelector<HTMLElement>('.photo-section__slider');
 
 const isOpenData = localStorage.getItem('isOpen');
 let isOpen = isOpenData ?? 'false';
+let position = isNaN(parseInt(localStorage.getItem('position'))) ? 0 : parseInt(localStorage.getItem('position'));
 
 export const processImages = (photos: Record<string, string>[]): void => {
   addSliderPhotos(photos);
@@ -12,7 +12,7 @@ export const processImages = (photos: Record<string, string>[]): void => {
   addClicksHandlers();
 };
 
-const addSliderPhotos = (photos: Record<string, string>[]) => {
+export const addSliderPhotos = (photos: Record<string, string>[]): void => {
   const fragment = document.createDocumentFragment();
   photos.forEach(function (photoItem) {
     const image = document.createElement('img');
@@ -34,6 +34,7 @@ const getCurrentStateFromStorage = () => {
 };
 
 const createBiggerImage = (source: string) => {
+  const photoList = document.querySelector<HTMLElement>('.photo-section__list');
   const biggerImage = document.createElement('img');
   biggerImage.src = source;
   biggerImage.classList.add('photo-element-center');
@@ -84,7 +85,6 @@ export const leftArrowClickHandler = (amountOfPhotos: number) => (): void =>
 export const rightArrowClickHandler = (amountOfPhotos: number) => (): void =>
   swipeToRight(amountOfPhotos);
 
-let position = parseInt(localStorage.getItem('position'));
 
 const swipeToLeft = (amountOfPhotos: number): void => {
   slider.style.transform =
@@ -96,7 +96,7 @@ const swipeToRight = (amountOfPhotos: number): void => {
     'translateX(' + calculateNewPosition(Direction.Right, amountOfPhotos) + 'px)';
 };
 
-const calculateNewPosition = (direction: Direction, amountOfPhotos: number): number => {
+export const calculateNewPosition = (direction: Direction, amountOfPhotos: number): number => {
   switch (direction) {
     case Direction.Left:
       position += photoWidth * numberOfSlidingPhoto;
