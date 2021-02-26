@@ -86,12 +86,12 @@ export const rightArrowClickHandler = (amountOfPhotos: number) => (): void =>
   swipeToRight(amountOfPhotos);
 
 
-const swipeToLeft = (amountOfPhotos: number): void => {
+export const swipeToLeft = (amountOfPhotos: number): void => {
   slider.style.transform =
     'translateX(' + calculateNewPosition(Direction.Left, amountOfPhotos) + 'px)';
 };
 
-const swipeToRight = (amountOfPhotos: number): void => {
+export const swipeToRight = (amountOfPhotos: number): void => {
   slider.style.transform =
     'translateX(' + calculateNewPosition(Direction.Right, amountOfPhotos) + 'px)';
 };
