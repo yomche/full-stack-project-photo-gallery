@@ -1,14 +1,23 @@
-import { calculateNewPosition } from '../src/processImages';
+import { calculateNewPosition, swipeToRight, swipeToLeft } from '../src/processImages';
 import { Direction } from '../src/constants';
+const sliderMock = document.createElement('div');
+
+describe('The value of property transform should be', () => {
+    test('-300px when swiping to the right', () => {
+    swipeToRight(5);
+    expect(sliderMock.style.transform).toBe('translateX(-300px)');
+});
+
+    test('0px when swiping to the left', () => {
+    swipeToLeft(5);
+    expect(sliderMock.style.transform).toBe('translateX(0px)');
+});
+});
 
 describe('Calculating the position of photos should', () => {
     test('be a function', () => {
     expect(typeof calculateNewPosition).toBe('function');
 });
-
-// test('function not empty', () => {
-//     expect(addSliderPhotos([])).toHaveReturned();
-// });
 
 test('return a number', () => {
     expect(typeof calculateNewPosition(Direction.Left, 20)).toBe('number');
