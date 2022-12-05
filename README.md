@@ -4,6 +4,8 @@
 
 ## Состав
 
+### Демострация
+
 Рабочую версию приложения можно посмотреть на [GitHub Pages](https://yomche.github.io/full-stack-project-photo-gallery/)
 
 
