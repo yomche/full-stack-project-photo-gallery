@@ -1,7 +1,7 @@
 {
   "name": "full-stack-project-photo-gallery",
   "version": "1.0.0",
-  "homepage": "https://yomche.github.io/full-stack-project-photo-gallery/",
+  "homepage": "https://yomche.github.io/full-stack-project-photo-gallery",
   "description": "",
   "main": "index.js",
   "devDependencies": {
@@ -55,7 +55,7 @@
     "eslint": "eslint . --ext .ts --fix",
     "stylelint": "stylelint --fix src/style.scss",
     "prettier": "prettier --write src/",
-    "deploy": "gh-pages -d src/"
+    "deploy": "gh-pages -d src"
   },
   "repository": {
     "type": "git",
