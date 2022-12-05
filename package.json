@@ -55,7 +55,8 @@
     "eslint": "eslint . --ext .ts --fix",
     "stylelint": "stylelint --fix src/style.scss",
     "prettier": "prettier --write src/",
-    "deploy": "gh-pages -d src"
+    "predeploy": "npm run webpack",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
