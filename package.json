@@ -1,9 +1,9 @@
 {
   "name": "full-stack-project-photo-gallery",
   "version": "1.0.0",
+  "homepage": "https://yomche.github.io/full-stack-project-photo-gallery/",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
@@ -20,6 +20,7 @@
     "css-loader": "^5.0.1",
     "eslint": "^7.19.0",
     "file-loader": "^6.2.0",
+    "gh-pages": "^4.0.0",
     "html-loader": "^1.3.2",
     "html-webpack-plugin": "^4.5.1",
     "lodash": "^4.17.20",
@@ -53,7 +54,8 @@
     "dev-server": "webpack serve",
     "eslint": "eslint . --ext .ts --fix",
     "stylelint": "stylelint --fix src/style.scss",
-    "prettier": "prettier --write src/"
+    "prettier": "prettier --write src/",
+    "deploy": "gh-pages -d src"
   },
   "repository": {
     "type": "git",
