@@ -55,7 +55,7 @@
     "eslint": "eslint . --ext .ts --fix",
     "stylelint": "stylelint --fix src/style.scss",
     "prettier": "prettier --write src/",
-    "deploy": "gh-pages -d src"
+    "deploy": "gh-pages -d src/"
   },
   "repository": {
     "type": "git",
@@ -65,6 +65,5 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/yomche/full-stack-project-photo-gallery/issues"
-  },
-  "homepage": "https://github.com/yomche/full-stack-project-photo-gallery#readme"
+  }
 }
